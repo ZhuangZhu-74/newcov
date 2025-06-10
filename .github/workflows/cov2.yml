@@ -38,10 +38,8 @@ jobs:
           echo "SOURCE_BRANCH=${SOURCE_BRANCH}" | tee -a $GITHUB_ENV
           echo "TARGET_BRANCH=${TARGET_BRANCH}" | tee -a $GITHUB_ENV
           # torch or onnx maybe part of this var
-          if [[ "${TARGET_BRANCH}" == "main" ]]; then
-            echo "TARGET_COV_PATH=../../../${SOURCE_BRANCH}/coverage" | tee -a $GITHUB_ENV
-          elif [[ "${TARGET_BRANCH}" == release/* ]]; then
-            echo "TARGET_COV_PATH=../../../${SOURCE_BRANCH}/coverage" | tee -a $GITHUB_ENV
+          if [[ "${TARGET_BRANCH}" == "main" || "${TARGET_BRANCH}" == release/* ]]; then
+            echo "TARGET_COV_PATH=coverage" | tee -a $GITHUB_ENV
           else
             echo "unexpected branch"
           fi
@@ -50,12 +48,12 @@ jobs:
       - name: Report coverage
         uses: insightsengineering/coverage-action@v2
         with:
-          # path: ${{ env.COVERAGE_PATH }}
+          # path: 
           token: ${{ secrets.CI_TOKEN }}
           publish: true
           threshold: 95
           diff: true
-          diff-branch: main/level
+          diff-branch: ${{ env.TARGET_BRANCH }}
           diff-storage: gh-pages
           storage-subdirectory: ${{ env.TARGET_COV_PATH }}
         env:
