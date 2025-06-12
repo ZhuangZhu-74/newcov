@@ -2,18 +2,21 @@ name: Coverage Only
 
 on:
   workflow_dispatch:
-    inputs:
-      branches:
-        - main
-        - 'release/**'
-    
-  
+
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Check if ref is main or release
+        run: |
+          if [[ "${{ github.ref_name }}" != "main" && ! "${{ github.ref_name }}" =~ ^release/ ]]; then
+            echo "Error: The branch is neither 'main' nor starts with 'release/'"
+            exit 1
+          fi
+          echo "The branch is either 'main' or starts with 'release/'"
+
       - name: Checkout code
         uses: actions/checkout@v4
 
