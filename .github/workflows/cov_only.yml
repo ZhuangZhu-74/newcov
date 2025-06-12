@@ -2,6 +2,11 @@ name: Coverage Only
 
 on:
   workflow_dispatch:
+    inputs:
+      branches:
+        - main
+        - 'release/**'
+    
   
 
 jobs:
@@ -35,5 +40,8 @@ jobs:
           publish: true
           threshold: 95
           diff: false
+          diff-branch: ${{ github.ref_name }}
+          diff-storage: gh-pages
+          storage-subdirectory: coverage
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
