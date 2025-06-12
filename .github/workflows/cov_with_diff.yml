@@ -1,4 +1,4 @@
-name: Coverage Report V2
+name: Coverage With Diff
 
 on:
   workflow_dispatch:
