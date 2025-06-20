@@ -42,7 +42,7 @@ jobs:
           token: ${{ secrets.CI_TOKEN }}
           publish: true
           threshold: 95
-          diff: false
+          diff: true
           diff-branch: ${{ github.ref_name }}
           diff-storage: gh-pages
           storage-subdirectory: coverage
